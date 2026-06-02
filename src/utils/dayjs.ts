@@ -57,7 +57,6 @@ export class Dayjs {
     unit: 'day' | 'month' | 'year' = 'day'
   ): number {
     const targetDate = new Dayjs(date).toDate();
-    const diffTime = this._date.getTime() - targetDate.getTime();
     switch (unit) {
       case 'year':
         return this._date.getFullYear() - targetDate.getFullYear();
@@ -68,7 +67,21 @@ export class Dayjs {
         );
       case 'day':
       default:
-        return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        // 按本地日历日计算天数差，避免历史时区/夏令时切换导致 23/25 小时日
+        // 被 Math.floor 截断后少算或多算一天（例如中国 1989-04-16 夏令时切换）。
+        return Math.floor(
+          (Date.UTC(
+            this._date.getFullYear(),
+            this._date.getMonth(),
+            this._date.getDate()
+          ) -
+            Date.UTC(
+              targetDate.getFullYear(),
+              targetDate.getMonth(),
+              targetDate.getDate()
+            )) /
+            (1000 * 60 * 60 * 24)
+        );
     }
   }
 

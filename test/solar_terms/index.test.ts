@@ -361,6 +361,35 @@ describe('Solar Terms', () => {
       expect(getSolarTermsInRange('2024-02-01', '2024-01-01')).toEqual([]);
     });
 
+    test('issue #40: 1989-04-16 夏令时切换后节气序号应连续递增', () => {
+      expect(getSolarTermsInRange('1989-04-15', '1989-04-18')).toEqual([
+        {
+          date: '1989-04-15',
+          term: 'pure_brightness',
+          name: '清明',
+          index: 11,
+        },
+        {
+          date: '1989-04-16',
+          term: 'pure_brightness',
+          name: '清明',
+          index: 12,
+        },
+        {
+          date: '1989-04-17',
+          term: 'pure_brightness',
+          name: '清明',
+          index: 13,
+        },
+        {
+          date: '1989-04-18',
+          term: 'pure_brightness',
+          name: '清明',
+          index: 14,
+        },
+      ]);
+    });
+
     // 测试确保 getSolarTermsInRange 在一年内能覆盖全部24个节气
     test('getSolarTermsInRange should cover all 24 solar terms in a year', () => {
       const allTermsFor2024 = getSolarTermsInRange('2024-01-01', '2024-12-31');
