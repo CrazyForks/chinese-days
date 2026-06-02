@@ -23,13 +23,13 @@ export class Dayjs {
         // Regex to match YYYY-MM-DD or YYYY-M-D
         const match = date.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
         if (match) {
-          // Parse as UTC explicitly to ensure consistency and avoid Local/UTC mixing
-          // This handles '2004-10-9' (Local in V8) vs '2004-10-10' (UTC in V8) inconsistency
-          this._date = new Date(Date.UTC(
+          // 手动解析 YYYY-MM-DD，避免浏览器/运行时对短横线日期字符串的实现差异
+          // 使用本地日历日构造，确保 format('YYYY-MM-DD') 在任意时区都保持输入的日期语义
+          this._date = new Date(
             parseInt(match[1], 10),
             parseInt(match[2], 10) - 1,
             parseInt(match[3], 10)
-          ));
+          );
         } else if (isNaN(new Date(date).getTime())) {
           // Fallback for slash format or other formats
           this._date = new Date(date.replace(/-/g, '/'));

@@ -185,6 +185,15 @@ describe('solar_lunar', () => {
     );
   });
 
+  test('issue #40: 1989-04-16 与 1989-04-17 不应是同一农历日', () => {
+    const day16 = getLunarDate('1989-04-16');
+    const day17 = getLunarDate('1989-04-17');
+
+    expect(day16.lunarDay).toBe(11);
+    expect(day17.lunarDay).toBe(12);
+    expect(day17.lunarDay).toBe(day16.lunarDay + 1);
+  });
+
   describe('getSolarDateFromLunar', () => {
     const testCases = [
       {
