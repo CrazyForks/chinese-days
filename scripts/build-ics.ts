@@ -90,6 +90,13 @@ END:VTIMEZONE`,
     name: string,
     mark: DayType
   ) => {
+    const dayTypeLabel =
+      mark === DayType.Holiday ? info.holiday : info.workday;
+    const summary =
+      language == 'CN'
+        ? `${name}（${dayTypeLabel}）`
+        : `${name} (${dayTypeLabel})`;
+
     // 基于事件生成稳定的哈希值
     const generateStableUUID = () => {
       const hash = createHash('sha256');
@@ -105,9 +112,9 @@ END:VTIMEZONE`,
     cal.createEvent({
       start: startDate.toDate(),
       end: endDate.add(1, 'day').toDate(),
-      description: `${mark === DayType.Holiday ? info.holiday : info.workday}`,
+      description: dayTypeLabel,
       status: ICalEventStatus.CONFIRMED,
-      summary: `${name}(${mark === DayType.Holiday ? info.holiday : info.workday})`,
+      summary,
       location: info.location,
       transparency: ICalEventTransparency.TRANSPARENT,
       allDay: true,
