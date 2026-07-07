@@ -93,7 +93,7 @@ END:VTIMEZONE`,
     const dayTypeLabel =
       mark === DayType.Holiday ? info.holiday : info.workday;
     const summary =
-      language == 'CN'
+      language === 'CN'
         ? `${name}（${dayTypeLabel}）`
         : `${name} (${dayTypeLabel})`;
 
